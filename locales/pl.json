@@ -52,6 +52,7 @@
   "settings.section.behavior": "── Zachowanie ──────────────────",
   "settings.eclipse": "Tryb Zaćmienia (błysk RGB na kliknięcie LPM)",
   "settings.autostart": "Uruchamiaj z Windows",
+"settings.reset_on_exit": "Przywróć fabryczną animację przy zamknięciu",
   "settings.section.mouse": "── Myszka ──────────────────────",
   "settings.reset": "Reset do ustawień fabrycznych",
   "settings.reset.confirm": "Przywrócić ustawienia fabryczne myszki?",

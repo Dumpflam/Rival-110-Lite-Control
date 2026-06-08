@@ -21,6 +21,11 @@ DEFAULT_PROFILE = {
 
 DEFAULT_PROFILES = {"Default": DEFAULT_PROFILE.copy()}
 
+DEFAULT_CONFIG = {
+    "language": None,
+    "reset_on_exit": True,
+}
+
 EFFECTS = [
     "Statyczny", "Dwukolorowy", "Wygaszony",
     "Tęcza", "Oddychanie", "Puls Dwukolorowy", "Własny Gradient",

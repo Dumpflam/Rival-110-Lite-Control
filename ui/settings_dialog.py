@@ -1,5 +1,9 @@
 import sys
-import winreg
+
+try:
+    import winreg
+except ImportError:
+    winreg = None
 
 from PyQt6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QCheckBox, QPushButton,
@@ -9,9 +13,12 @@ from PyQt6.QtCore import pyqtSignal
 
 from core.config import APP_NAME, AUTORUN_KEY
 from core.i18n import t, available_languages, current_lang
+from core.profile_manager import ProfileManager
 
 
 def set_autostart(enable: bool, exe_path: str) -> None:
+    if winreg is None:
+        return
     try:
         key = winreg.OpenKey(
             winreg.HKEY_CURRENT_USER, AUTORUN_KEY, 0,
@@ -30,6 +37,8 @@ def set_autostart(enable: bool, exe_path: str) -> None:
 
 
 def get_autostart_state() -> bool:
+    if winreg is None:
+        return False
     try:
         key = winreg.OpenKey(
             winreg.HKEY_CURRENT_USER, AUTORUN_KEY, 0,
@@ -51,6 +60,7 @@ class SettingsDialog(QDialog):
         super().__init__(parent)
         self.setWindowTitle(t("settings.title"))
         self.setModal(False)
+        self._pm = ProfileManager()
 
         layout = QVBoxLayout(self)
 
@@ -65,6 +75,12 @@ class SettingsDialog(QDialog):
         self.chk_autostart.setChecked(get_autostart_state())
         self.chk_autostart.toggled.connect(self._on_autostart_toggled)
         layout.addWidget(self.chk_autostart)
+
+        self._chk_reset = QCheckBox(t("settings.reset_on_exit"))
+        cfg = self._pm.load_config()
+        self._chk_reset.setChecked(cfg.get("reset_on_exit", True))
+        self._chk_reset.toggled.connect(self._on_reset_on_exit_changed)
+        layout.addWidget(self._chk_reset)
 
         # Mouse section
         layout.addWidget(QLabel(t("settings.section.mouse")))
@@ -110,6 +126,11 @@ class SettingsDialog(QDialog):
         cfg["language"] = lang
         pm.save_config(cfg)
         self._lbl_lang_hint.setVisible(True)
+
+    def _on_reset_on_exit_changed(self, enabled: bool) -> None:
+        cfg = self._pm.load_config()
+        cfg["reset_on_exit"] = enabled
+        self._pm.save_config(cfg)
 
     def _on_reset(self) -> None:
         ans = QMessageBox.question(

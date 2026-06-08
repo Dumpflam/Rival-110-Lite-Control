@@ -52,6 +52,7 @@
   "settings.section.behavior": "── Behavior ──────────────────",
   "settings.eclipse": "Eclipse mode (RGB flash on left click)",
   "settings.autostart": "Launch with Windows",
+"settings.reset_on_exit": "Restore factory animation on exit",
   "settings.section.mouse": "── Mouse ──────────────────────",
   "settings.reset": "Reset to factory defaults",
   "settings.reset.confirm": "Restore factory settings?",

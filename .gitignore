@@ -1,18 +1,12 @@
 # Python
 __pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-.Python
 *.egg-info/
-dist/
-build/
 *.egg
 
 # PyInstaller
-*.spec.bak
 dist/
 build/
+*.spec.bak
 
 # Aplikacja — dane użytkownika (nie commituj)
 config.json
@@ -21,9 +15,6 @@ profiles.json
 profiles.bak
 custom_effects.json
 rival_gui.log
-
-# Ikona generowana skryptem (można ją commitować jeśli chcesz)
-# assets/icon.ico
 
 # Środowisko wirtualne
 venv/
@@ -42,5 +33,5 @@ Thumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 
-# macOS (na wszelki wypadek)
+# macOS
 .DS_Store

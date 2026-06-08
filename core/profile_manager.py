@@ -3,7 +3,7 @@ import logging
 import copy
 from pathlib import Path
 
-from core.config import CONFIG_FILE, PROFILES_FILE, DEFAULT_PROFILE, DEFAULT_PROFILES
+from core.config import CONFIG_FILE, PROFILES_FILE, DEFAULT_PROFILE, DEFAULT_PROFILES, DEFAULT_CONFIG
 
 logger = logging.getLogger(__name__)
 
@@ -89,15 +89,17 @@ class ProfileManager:
         self.save_config(self._config)
 
     def load_config(self) -> dict:
+        result = DEFAULT_CONFIG.copy()
         for path in (CONFIG_FILE, CONFIG_FILE.with_suffix(".bak")):
             try:
                 with open(path, "r", encoding="utf-8") as f:
-                    return json.load(f)
+                    result.update(json.load(f))
+                    return result
             except FileNotFoundError:
                 continue
             except (json.JSONDecodeError, IOError) as e:
                 logger.warning("Could not load %s: %s", path.name, e)
-        return {}
+        return result
 
     def save_config(self, cfg: dict) -> None:
         try:

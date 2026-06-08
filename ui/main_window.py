@@ -242,7 +242,11 @@ class MainWindow(QMainWindow):
 
     def _quit(self) -> None:
         engine.stop()
-        hid.disconnect()
+        cfg = self._pm.load_config()
+        if cfg.get("reset_on_exit", True):
+            hid.reset()
+        else:
+            hid.disconnect()
         self.tray.hide()
         QApplication.quit()
 
