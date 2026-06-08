@@ -29,7 +29,9 @@ A lightweight, open-source control panel for SteelSeries Rival mice on Windows. 
 
 ## Screenshots
 
-> *(Add screenshots here)*
+> *<img width="818" height="658" alt="{3FF67E7F-24D8-4E81-8E85-90A6030BE310}" src="https://github.com/user-attachments/assets/4ec9db66-33a7-4503-92d5-d22fd54e46f0" />
+* <img width="787" height="504" alt="{D06F5993-6904-4492-A7F4-DADBA732C436}" src="https://github.com/user-attachments/assets/2264aea1-0b46-4371-8b86-54d4013c495c" />
+
 
 ---
 
