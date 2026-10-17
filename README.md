@@ -1,3 +1,6 @@
+# I DO NOT TAKE CREDIT FOR THIS.
+# CHATGPT HAS BEEN USED TO MAKE EVERY PART OF THIS.
+
 # Rival 110 Lite Control — Full Rebuild
 
 A compact, independent, open-source Windows application designed around the **SteelSeries Rival 110** (`USB 1038:1729`). Inspired by [Rival Lite Control](https://github.com/AnonBOTpl/Rival-Lite-Control) by AnonBOTpl, but rebuilt rather than applying brittle text patches to the older three-zone UI. Direct hardware control is provided by [Rivalcfg](https://github.com/flozz/rivalcfg).
