@@ -1,6 +1,3 @@
-# I DO NOT TAKE CREDIT FOR THIS.
-# CHATGPT HAS BEEN USED TO MAKE EVERY PART OF THIS.
-
 # Rival 110 Lite Control
 
 A lightweight, open-source Windows application for configuring the **SteelSeries Rival 110** without SteelSeries GG. Adjust DPI and polling rate, create RGB animations, save profiles, and switch settings from the system tray.
