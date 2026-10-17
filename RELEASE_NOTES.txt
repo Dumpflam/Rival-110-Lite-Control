@@ -1,0 +1,18 @@
+RIVAL 110 LITE CONTROL — r17 (Sequence Editor + Large Preview)
+
+- Cropped unused transparent margins from the mouse preview photograph.
+  Kept the source image, shell shading, and actual illuminated pixel shapes intact.
+- Rebased registered wheel/logo LED region coordinates by the same crop offset.
+  Core and glow sprites were not resized, stretched, or redrawn.
+- Replaced the spreadsheet-like custom sequence table with a colorful horizontal
+  keyframe timeline inspired by the original Rival Lite Control editor.
+- Select a segment, drag dividing diamonds to change adjacent durations, and
+  edit the selected color, duration (50-60000 ms), and transition.
+- Add, duplicate, delete, or reorder keyframes with explicit controls.
+- Removed the unstyled QTableWidget top-left header corner (the white square).
+- Original hardware, profiles, tray, and lighting effects remain unchanged.
+
+BUILD STATUS
+- Python syntax checks and 32 offline tests passed.
+- Windows Qt GUI/USB still require validation on the target system.
+- Build with BUILD_EXE.bat in a freshly extracted folder.

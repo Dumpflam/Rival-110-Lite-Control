@@ -1,0 +1,18 @@
+{
+  "image_width": 506,
+  "image_height": 1000,
+  "sprites": {
+    "wheel": {
+      "x": 198,
+      "y": 216,
+      "width": 109,
+      "height": 164
+    },
+    "logo": {
+      "x": 158,
+      "y": 841,
+      "width": 169,
+      "height": 137
+    }
+  }
+}
