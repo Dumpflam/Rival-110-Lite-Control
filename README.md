@@ -1,147 +1,130 @@
 # I DO NOT TAKE CREDIT FOR THIS.
 # CHATGPT HAS BEEN USED TO MAKE EVERY PART OF THIS.
 
-# Rival 110 Lite Control — Full Rebuild
+# Rival 110 Lite Control
 
-A compact, independent, open-source Windows application designed around the **SteelSeries Rival 110** (`USB 1038:1729`). Inspired by [Rival Lite Control](https://github.com/AnonBOTpl/Rival-Lite-Control) by AnonBOTpl, but rebuilt rather than applying brittle text patches to the older three-zone UI. Direct hardware control is provided by [Rivalcfg](https://github.com/flozz/rivalcfg).
+A lightweight, open-source Windows application for configuring the **SteelSeries Rival 110** without SteelSeries GG. Adjust DPI and polling rate, create RGB animations, save profiles, and switch settings from the system tray.
 
-**This archive includes complete application source and a Windows EXE builder; it does not contain a precompiled Windows executable.** A native Windows runner is required to package and validate a Windows executable. The EXE it produces does not require Python or SteelSeries GG.
+> **AI use and attribution:** This rebuild was created using ChatGPT. I do not claim credit for the original [Rival Lite Control](https://github.com/AnonBOTpl/Rival-Lite-Control) project by AnonBOTpl or for [Rivalcfg](https://github.com/flozz/rivalcfg), which provides the mouse-control functionality. This is an unofficial community project, not affiliated with SteelSeries.
 
-## Build (Windows 10/11)
+## Compatibility
 
-1. Extract this archive to a **fresh folder**. Do not merge with the old DPI patch / EXE builder.
-2. Install Python 3.10 or newer if you do not already have it (from python.org). The installer must put `py` or `python` on PATH.
-3. Double-click **`BUILD_EXE.bat`** while connected to the internet.
-4. The script installs build dependencies in a *private* `_build/venv`, runs all tests, builds the standalone executable, then places **`Rival110LiteControl.exe`** in the folder beside the BAT file.
-5. Copy just the EXE anywhere and launch. **Python is not required to run the EXE.**
+- **Mouse:** SteelSeries Rival 110 (USB vendor/product ID `1038:1729`)
+- **Operating system:** Windows 10 or 11
+- **For building:** Python 3.10+ and an internet connection
+- **For running the built EXE:** No Python installation or SteelSeries GG required
 
-The builder runs a **GUI/tray integration test on Windows before compiling**. The transparently cropped Rival 110 photo and separate, pixel-registered wheel/logo lighting sprites are bundled into the EXE. The renderer uses the real illuminated pixels from the source photo: no freehand LED circles, enlarged full-image masks, or manual position offsets. If an import or GUI control has a problem, it fails the build visibly rather than producing a silently broken EXE.
+The software is designed specifically for the Rival 110. Other SteelSeries models are not supported by this interface.
 
-### Alternate build without installing Python locally
+## Features
 
-Upload the folder contents (including `.github/workflows/`) to a personal GitHub repository, then go to **Actions > Build Rival110LiteControl.exe > Run workflow**. Download the `Rival110LiteControl-Windows` artifact after the job succeeds. Do not redistribute an untested executable as if it were production verified.
+### Mouse settings
 
-## Controls and usage
+- Two onboard DPI stages, each adjustable from **200 to 7,200 DPI** in steps of 100
+- Polling rates of **125, 250, 500, and 1,000 Hz**
+- DPI button mode: switch between DPI stages or use OS-defined button input
+- Named DPI profiles (for example, `800 / 1600` and `800 / 3200`)
+- Save settings to the mouse, import/export profiles, and reset device settings with confirmation
 
-### Mouse / DPI
+### Single-zone RGB lighting
 
-- Two independent onboard DPI values **200–7200**, adjustable in **100 DPI** steps.
-- Polling rate **125 / 250 / 500 / 1000 Hz**.
-- Button behind the scroll wheel: **cycle DPI** or **OS-defined**.
-- Named DPI profiles, such as **800 / 1600**, **800 / 3200**, **400 / 800**. Create, update, delete, import and export profiles.
-- Selecting a profile from the **tray menu applies the settings immediately** and saves them to mouse memory. The physical DPI switch selects one of the two values.
-- Profile restoration on startup/reconnect writes settings **without unnecessarily saving to internal flash memory repeatedly**.
-- Optional device factory reset (with confirmation).
+The Rival 110 uses **one controllable lighting zone**. Animations generate one color at a time, rather than pretending the mouse has multiple independent RGB zones.
 
-### Lighting — one real LED zone
+The software includes **16 lighting effects**: Static, Two-color, Off, Rainbow, Breathing, Two-color Pulse, Custom Gradient, Sunrise, Comet, Lightning, Color Wave, Fire, Ocean, Starry Night, CPU Monitor, and Custom Sequence.
 
-The old app displayed three RGB zones. The Rival 110's documented LED control is **one color command**. Every effect here computes a **single color at each frame**. No nonexistent-zone widgets remain.
+Effects have brightness and saturation controls, speed where applicable, and their own additional settings. For example, Lightning supports strike frequency, flash length, double-strike probability, and background glow.
 
-The 16 original effect categories are retained in English:
+**Custom Sequence** uses a visual, color-coded timeline:
 
-| Effect | New configurable settings / behavior |
-|---|---|
-| Static | Individual color; brightness level |
-| Two-color | Color mix sharpness, pause at colors |
-| Off | Switch LED off |
-| Rainbow | Hue range, reverse direction |
-| Breathing | Minimum glow, softness |
-| Two-color Pulse | Minimum glow, transition width |
-| Custom Gradient | Intermediate hue shift, dwell |
-| Sunrise | Sunrise duration, daylight pause |
-| Comet | Flash length, tail decay, secondary streaks |
-| Lightning | Strikes/minute, flash length, double-strike chance, background glow; **all flashes use the only LED** |
-| Color Wave | Hue span, waveform softness |
-| Fire | Flicker intensity, warmth, ember frequency |
-| Ocean | Wave depth, hue shift |
-| Starry Night | Twinkles/minute, twinkle decay, ambient glow |
-| CPU Monitor | Low-load hue, high-load hue, minimum output |
-| Custom Sequence | Color-coded timeline; click to select steps, drag diamond separators to adjust neighboring durations, choose color/duration/transition, add/duplicate/delete/reorder; looping and softness |
+1. Click a colored segment to select a keyframe.
+2. Choose its color, duration, and **Smooth fade** or **Hold color** transition.
+3. Drag the diamond between segments to redistribute duration between neighboring steps.
+4. Add, duplicate, delete, or move steps left/right. Adjust looping and transition softness in the effect options.
 
-All software animations also have general **brightness, speed (where meaningful), and saturation** controls. Effect-specific parameter values are remembered independently when you switch effects. Software animations currently use a roughly 40 ms frame timer, with actual USB update timing dependent on Rivalcfg/HID operations.
+Sequences support up to **100 steps**, with durations from **50 ms to 60,000 ms** per step.
 
-The app additionally exposes the **documented onboard lighting effect IDs**: Hardware Breath, Hardware Effect 2 and Hardware Effect 4. Hardware modes can run without a background software animation. Rivalcfg documents numeric IDs 2 and 4, but the firmware's appearance for these modes is not described; do not assume they match a specific animation.
+**Software animations need the application running** (it can stay in the tray). Static colors and the supported onboard hardware modes can be saved to the mouse. The app also exposes Hardware Breath and firmware effect IDs 2 and 4, whose exact visual behavior is not documented by the project.
 
-Save Static, Off or an onboard effect to the mouse through **Device / Diagnostics > Save current static/breath color to mouse**. Other effects require the app in the tray. **No effect saves LED frames to flash memory.**
+### Live mouse visualization
 
-### Appearance / startup
+- Large Rival 110 preview on the right; compact preview when the window is too narrow
+- LED colors visualized using pixel-aligned masks derived from the actual illuminated wheel and logo in the reference mouse photo
+- Separate dark and light appearances, with a natural mouse-body reflection
+- Preview follows the current animation
 
-- Dark theme by default, optional light theme.
-- Square-edged beveled controls, flat rectangular cards, classic Windows-inspired Aero header. No emojis.
-- Accent picker plus six quick accent choices for selected tabs, sliders and controls.
-- Starts with Windows by default, using **HKCU Run**, and opens to the tray on automatic launches. Disable this in Appearance / Startup.
-- Closing the window minimizes to tray by default; right-click the icon to **Exit**, **change DPI profile**, **choose saved lighting**, or **choose any effect preset**. All changes take effect with the app hidden.
-- USB reconnects automatically and profiles remain available offline. If another driver/software locks the mouse, close it and use Device / Diagnostics > Reconnect.
+### Windows interface and tray
 
-### Saved files
+- Classic Windows-inspired, square-edged interface with **dark theme by default**, optional light theme, and selectable accent colors
+- Save, select, import, and export lighting profiles
+- Switch DPI profiles, saved lighting profiles, and effects from the **system tray** without opening the window
+- Optional **Start with Windows** (enabled by default); automatic launches start in the tray
+- Closing the window minimizes to the tray by default; use **Exit** in the tray menu to quit
+- Single-instance protection: launching the app again opens the existing instance instead of starting another
+- Automatic USB reconnect attempts when the mouse is disconnected
 
-Configuration, named DPI and lighting profiles, accent/theme preference, latest working lighting and logs are stored at:
+## Build a Windows executable
 
-```
+This repository contains the **source code and EXE builder**, not a precompiled executable.
+
+### Option 1 — Build locally
+
+1. Clone this repository or choose **Code → Download ZIP** on GitHub, then extract it.
+2. Install [Python 3.10 or newer](https://www.python.org/downloads/) if necessary. Ensure `py` or `python` is available on your PATH.
+3. In the repository's root folder, double-click **`BUILD_EXE.bat`**.
+4. Wait for the dependency installation, Python tests, Qt GUI/tray integration test, and PyInstaller build.
+5. When the build succeeds, run **`Rival110LiteControl.exe`** from the same folder.
+
+The builder uses an isolated `_build/venv` and bundles the required dependencies and mouse-preview assets into a single Windows executable. You do not need Python on the machine where you run the finished EXE.
+
+### Option 2 — Build with GitHub Actions
+
+If GitHub Actions is enabled for your fork:
+
+1. Open the **Actions** tab.
+2. Select **Build Rival110LiteControl.exe** and choose **Run workflow**.
+3. After the workflow completes successfully, download the **`Rival110LiteControl-Windows`** artifact from the run.
+4. Extract the artifact to get the EXE.
+
+The workflow is also configured to build on pushes to the `main` branch.
+
+## Using the application
+
+**Mouse / DPI:** Enter the two DPI stages, select polling rate and button behavior, then choose **Apply & Save to Mouse**. Save named profiles if you want to switch among configurations quickly.
+
+**Lighting:** Choose an effect, edit its colors and parameters, then save it as a lighting profile. For continuous animation, leave the app running in the system tray.
+
+**Device / Diagnostics:** Reconnect the mouse, save supported onboard lighting, or inspect connection information.
+
+**Appearance / Startup:** Switch themes, choose an accent color, and control startup and tray behavior.
+
+If your Rival 110 cannot be opened, exit **SteelSeries GG / Engine** or any other program that may be accessing the same device, then use **Reconnect Rival 110**.
+
+## Profiles and settings
+
+Settings and profiles are saved separately from the EXE, so replacing the application does not normally remove them:
+
+```text
 %APPDATA%\Rival110Lite\settings.json
 %APPDATA%\Rival110Lite\rival110.log
 ```
 
-Profiles use plain JSON; previous config is backed up automatically. `.rivalprofile` import attempts to translate legacy Polish effect names and choose the old first-zone color (`z1`).
+Profiles are stored as JSON and can be imported or exported. The application also attempts to import older `.rivalprofile` files, translating recognized legacy effect names and using the old first lighting zone's color. A backup of the previous settings file is kept automatically.
 
-## Limitations / testing status
+If you move the EXE after enabling Windows autostart, disable and re-enable **Start with Windows** to update the stored path.
 
-- This package has passed **31 pure-Python unit tests**, including all effect types, DPI validation, fake HID writes, storage/backup, legacy profile conversion and LED memory-save behavior.
-- **The Windows Qt integration test has been written into the build process but cannot be run in the Linux environment used to prepare this package.** It covers startup, UI creation, sliders, sequence editor, theme and tray actions with a mocked Rivalcfg mouse.
-- Windows EXE building has not been run here. You will receive a normal error if it fails on your Windows installation.
-- **USB interaction on a real SteelSeries Rival 110 has not been hardware-tested.** Preset effects 2 and 4 in particular have vendor-undocumented visual behavior.
-- Firmware-specific features not exposed in Rivalcfg's Rival 110 profile (e.g. lift-off distance adjustment, sensor calibration, macros) are **not offered**. No guessed HID packets are sent.
-- A signed EXE is **not** provided; Windows SmartScreen may warn on a personally built PyInstaller executable.
+## Limitations and testing
 
-## Sources / acknowledgments
+- The current **r17** source passed **32 offline Python tests** covering effects, settings, device commands using mock hardware, and regression checks.
+- The Windows builder also runs a Qt GUI/tray integration test before packaging. These tests cannot replace testing on a physical mouse.
+- Real-world USB behavior depends on the Rival 110, its firmware, Rivalcfg, and other software accessing the device. Hardware and Windows configurations have not been exhaustively validated.
+- Lift-off distance, sensor calibration, macros, and other features not provided through Rivalcfg's Rival 110 API are not implemented. The app does not send speculative HID commands.
+- The generated EXE is unsigned; Windows SmartScreen may warn when you run it.
+- This is a **PyInstaller one-file application**, so its first launch can take longer while bundled files are extracted.
 
-- Rival Lite Control project (MIT): https://github.com/AnonBOTpl/Rival-Lite-Control
-- Rivalcfg project and Rival 110 device definition: https://flozz.github.io/rivalcfg/devices/rival110.html
-- Rivalcfg implements the device's two sensitivities, polling rate, color, light effect, button mode and onboard save command.
+## Credits and license
 
-This independent rebuild is distributed under MIT. See `LICENSE`. The dependencies retain their own respective licenses.
+- **[Rival Lite Control](https://github.com/AnonBOTpl/Rival-Lite-Control)** by AnonBOTpl — original project and inspiration (MIT)
+- **[Rivalcfg](https://github.com/flozz/rivalcfg)** by flozz and contributors — SteelSeries device-control library; [Rival 110 device reference](https://flozz.github.io/rivalcfg/devices/rival110.html)
+- **ChatGPT** — used to create the source code, UI, assets processing, tests, and documentation for this rebuild
 
-## Revision r3 — October 16, 2026
-
-Fixes for r2's Windows smoke-test failure:
-
-- Escapes the Qt stylesheet braces correctly (previously caused `NameError: name 'background' is not defined`).
-- Adds independent tests evaluating the theme stylesheet for **both Dark and Light**.
-- Bundles `assets/rival110_mouse.png` into the PyInstaller EXE using `--add-data`; r2 omitted this and would have shown a missing mouse preview after packaging.
-- Fixes the `QPainter.fillRect` radial-gradient call to pass a `QBrush` explicitly.
-- Extends the Windows smoke test to verify both mouse-preview images load, render, and follow the Light theme.
-- A `QFontDatabase: Cannot find font directory` warning in the headless/offscreen smoke test is non-fatal and is separate from the stylesheet error.
-
-**Historical note:** r3 fixed the earlier stylesheet error. Use the newest r4 builder for the Qt paint crash fix described below.
-
-## Revision r4 — October 16, 2026
-
-This fixes the Windows Qt preview crash that occurred after r3 passed the core tests. Qt6 does not implicitly convert the `QPoint` returned by `QRect.center()` into the `QPointF` expected by `QRadialGradient(center, radius)`. The central background glow now uses the unambiguous three-floating-point-number constructor (`centerX, centerY, radius`). The other two radial gradients already used that overload.
-
-The GUI smoke test has been expanded to **show the window**, force paint events for the **compact and full-size mouse previews** in **Dark and Light** themes, and verify that the large preview hides when the window is narrow. Those GUI tests run on the Windows machine that is building the EXE, before packaging; they have not been run in this Linux development environment. The 25 pure-Python offline tests pass here.
-
-**Historical r4 note:** Extract each new revision into a fresh directory. The optional `QFontDatabase` warning from Qt's offscreen test is not the crash. The build script now points Qt at the system fonts folder during the test when available.
-
-## Revision r7 — October 16, 2026
-
-- Fixed the **r6 test failure**: `test_radial_gradient_center_uses_numeric_overload` now inspects every method of the preview widget, including `_draw_led_overlay`, rather than assuming all radial gradients are declared in `paintEvent`. All 27 offline tests pass.
-- Added a **Windows named mutex** (held for the lifetime of the application) to block multiple copies even during initial launch, plus a per-user **Qt local IPC server** to ask an existing tray instance to open its window when the EXE is launched again. A `--tray` background launch will not raise the existing window.
-- Applied explicit Qt `QMenu` **stylesheets and foreground palettes**, including every submenu, to correct gray-on-gray or dim tray-menu text. Dark theme uses light text, light theme uses dark text, and selection uses the accent color. Changing the theme refreshes the tray menu.
-- Expanded the Windows Qt integration smoke test to check a second instance is rejected, an IPC `SHOW` request reaches the first instance, `PING` does not show it, the lock is released cleanly, and tray text colors follow both themes.
-
-**Important when upgrading:** If you have an **older r6 or earlier EXE running**, first right-click its tray icon and select Exit. That version cannot be prevented by a mutex it was never built to acquire. After installing r7, new r7 launches will enforce single-instance behavior.
-
-The Windows EXE and real USB mouse remain untested in the source author's Linux environment. `BUILD_EXE.bat` runs the Qt integration tests on Windows before freezing the EXE. A failed test stops the build rather than quietly shipping a nonfunctional executable.
-
-
-## Revision r8 — October 16, 2026
-
-Addresses the r7 Windows build failure `Existing instance did not receive the open command`:
-
-- The previous Qt integration test called the local socket client **synchronously on the same thread** as the running `QLocalServer`. That blocked the Qt event loop, so the first instance couldn't process the request before the sender disconnected.
-- The IPC client now waits for a positive `OK` acknowledgment from the running instance. It uses a **read/write socket**, retries during startup, and doesn't claim that a command was delivered just because the pipe connection was established.
-- The IPC server buffers newline-terminated requests, dispatches `SHOW` to the existing window callback, and acknowledges handled `SHOW` or `PING` requests. Background `--tray` launches still do not show the window.
-- The Windows Qt smoke test now runs the second-instance sender in a **separate thread**, allowing the first app's event loop to run. It additionally spawns a **real second Windows process** to verify cross-process mutex rejection and `SHOW`/`PING` delivery.
-- **29 offline tests passed.** Qt's Windows integration tests are still run on your Windows machine by `BUILD_EXE.bat` before compilation; this Linux build environment cannot execute those tests because PyQt6 is not available here.
-
-To upgrade, exit the current instance from its system tray, extract this release into a **fresh folder**, and run `BUILD_EXE.bat`. Existing profiles remain in `%APPDATA%\Rival110Lite`.
+This rebuild is provided under the **MIT License**; see [LICENSE](LICENSE). Dependencies and upstream projects retain their respective licenses and attribution requirements.
