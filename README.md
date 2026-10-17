@@ -66,7 +66,7 @@ Sequences support up to **100 steps**, with durations from **50 ms to 60,000 ms*
 
 This repository contains the **source code and EXE builder**, not a precompiled executable.
 
-### Option 1 — Build locally
+### Build locally
 
 1. Clone this repository or choose **Code → Download ZIP** on GitHub, then extract it.
 2. Install [Python 3.10 or newer](https://www.python.org/downloads/) if necessary. Ensure `py` or `python` is available on your PATH.
@@ -75,17 +75,6 @@ This repository contains the **source code and EXE builder**, not a precompiled 
 5. When the build succeeds, run **`Rival110LiteControl.exe`** from the same folder.
 
 The builder uses an isolated `_build/venv` and bundles the required dependencies and mouse-preview assets into a single Windows executable. You do not need Python on the machine where you run the finished EXE.
-
-### Option 2 — Build with GitHub Actions
-
-If GitHub Actions is enabled for your fork:
-
-1. Open the **Actions** tab.
-2. Select **Build Rival110LiteControl.exe** and choose **Run workflow**.
-3. After the workflow completes successfully, download the **`Rival110LiteControl-Windows`** artifact from the run.
-4. Extract the artifact to get the EXE.
-
-The workflow is also configured to build on pushes to the `main` branch.
 
 ## Using the application
 
